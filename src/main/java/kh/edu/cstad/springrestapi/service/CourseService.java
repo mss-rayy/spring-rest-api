@@ -6,15 +6,26 @@ import kh.edu.cstad.springrestapi.dto.CourseResponse;
 import java.util.List;
 
 public interface CourseService {
-//    get courses ?status="false"
+
+    /**
+     * Get All Courses
+     * @return List of CourseResponse
+     * @autor lyheang
+     */
+//    get all course, status, title
+//    /courses, /course?status=true, /course?title=web, /course?status=true&title=web
     List<CourseResponse> getCourses();
 
+
+    /**
+     * បង្កើតមេរៀនថ្មី
+     * @param courseRequest
+     * @return CourseResponse
+     */
     CourseResponse createCourse(CourseRequest courseRequest);
 
-//   courses?status="true"&title="spring"
-//    List<CourseResponse> getCourses(String status, String title);
 
-//  Get course by code
-//    CourseResponse getCourseByCode(String code);
+    void deleteCourse(String code);
+
 
 }
