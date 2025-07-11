@@ -1,31 +1,42 @@
 package kh.edu.cstad.springrestapi.controller;
 
-import kh.edu.cstad.springrestapi.domain.Course;
+import kh.edu.cstad.springrestapi.dto.CourseRequest;
 import kh.edu.cstad.springrestapi.dto.CourseResponse;
 import kh.edu.cstad.springrestapi.service.CourseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-@Controller
+
+@RestController
 @RequestMapping("/api/v1/courses")
 @RequiredArgsConstructor
 public class CourseController {
 
-//    need service bean
     private final CourseService courseService;
 
-//    get all courses
-
     @GetMapping()
-    @ResponseBody
-    public List<CourseResponse> getCourses(@RequestParam(required = false, defaultValue = "true") Boolean status){
-
-       return courseService.getCourses(status);
+    public List<CourseResponse> getCourses(@RequestParam(required = false) Boolean status, @RequestParam(required = false) String title){
+       return courseService.getCourses(status, title);
     }
+
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public CourseResponse addCourse(@RequestBody CourseRequest courseRequest){
+        return courseService.addCourse(courseRequest);
+    }
+
+    @GetMapping("/{code}")
+    public CourseResponse getCourseByCode(@PathVariable String code){
+        return courseService.getCourseByCode(code);
+    }
+
+    @DeleteMapping("/{code}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCourseByCode(@PathVariable String code){
+        courseService.deleteCourseByCode(code);
+    }
+
 }
