@@ -1,0 +1,40 @@
+package kh.edu.cstad.springrestapi.controller;
+
+import kh.edu.cstad.springrestapi.dto.CourseRequest;
+import kh.edu.cstad.springrestapi.dto.CourseResponse;
+import kh.edu.cstad.springrestapi.service.CourseService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/courses")
+public class CourseController {
+
+//    1. define dependency
+    private final CourseService courseService;
+
+    @GetMapping()
+    @ResponseBody
+    public List<CourseResponse> getCourses(){
+
+        return courseService.getCourses();
+    }
+
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public CourseRequest createCourse(@RequestBody CourseRequest courseRequest){
+        return courseService.createCourse(courseRequest);
+    }
+
+//    get course by id (/api/v1/courses/{id}
+
+//    Constructor or setter base
+
+//    service
+}

@@ -1,18 +1,20 @@
 package kh.edu.cstad.springrestapi.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.UUID;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Course {
-    private Integer id;
+    private UUID uuid;
+    private String code;
     private String title;
     private String description;
     private Double price;
     private Boolean status;
+
 }
