@@ -16,6 +16,8 @@ public class ServiceException {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Map<?, ?>> handleServiceException(ResponseStatusException e) {
 
+//        Homework : change this response to ErrorResponse instead
+
         Map<String, Object> error = new HashMap<>();
         error.put("status", e.getStatusCode().value());
         error.put("message", e.getReason());
@@ -23,8 +25,5 @@ public class ServiceException {
 
         return ResponseEntity.status(e.getStatusCode()).body(error);
     }
-
-
 }
 
-// developer, end user

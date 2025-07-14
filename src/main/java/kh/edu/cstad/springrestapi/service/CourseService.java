@@ -12,10 +12,11 @@ public interface CourseService {
      * @return List of CourseResponse
      * @autor lyheang
      */
-//    get all course, status, title
-//    /courses, /course?status=true, /course?title=web, /course?status=true&title=web
-    List<CourseResponse> getCourses();
 
+//    Change getCourses to the method that can:
+//    1. get all course, status, title
+//    2. /courses, /course?status=true, /course?title=web, /course?status=true&title=web
+    List<CourseResponse> getCourses();
 
     /**
      * បង្កើតមេរៀនថ្មី
@@ -24,8 +25,5 @@ public interface CourseService {
      */
     CourseResponse createCourse(CourseRequest courseRequest);
 
-
     void deleteCourse(String code);
-
-
 }
