@@ -1,5 +1,6 @@
 package kh.edu.cstad.springrestapi.controller;
 
+import jakarta.validation.Valid;
 import kh.edu.cstad.springrestapi.dto.CourseRequest;
 import kh.edu.cstad.springrestapi.dto.CourseResponse;
 import kh.edu.cstad.springrestapi.service.CourseService;
@@ -24,7 +25,7 @@ public class CourseController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public CourseResponse addCourse(@RequestBody CourseRequest courseRequest){
+    public CourseResponse addCourse(@Valid @RequestBody CourseRequest courseRequest){
         return courseService.addCourse(courseRequest);
     }
 

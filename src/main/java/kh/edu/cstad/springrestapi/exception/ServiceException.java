@@ -22,4 +22,6 @@ public class ServiceException{
 
         return ResponseEntity.status(ex.getStatusCode()).body(error);
     }
+
+
 }
