@@ -12,26 +12,31 @@ import java.util.UUID;
 @Getter
 public class CourseRepository {
 
-    List<Course> courses;
+    private List<Course> courses;
 
-    public CourseRepository(){
+    CourseRepository(){
         courses = new ArrayList<>();
-
-        courses.add(Course.builder()
-                .uuid(UUID.randomUUID())
-                .code("B-01")
-                .title("Web Design")
-                .description("Web Design description")
-                .price(100.0)
-                .status(true)
-                .build());
-        courses.add(Course.builder()
-                .uuid(UUID.randomUUID())
-                .code("B-02")
-                .title("Spring Framework")
-                .description("Spring Framework description")
-                .price(150.0)
-                .status(false)
-                .build());
+        courses.add(
+                Course.builder()
+                        .id(UUID.randomUUID())
+                        .code("b-01")
+                        .title("Course 1")
+                        .description("Course 1 Description")
+                        .price(100.0)
+                        .status(true)
+                        .build()
+        );
+        courses.add(
+                Course.builder()
+                        .id(UUID.randomUUID())
+                        .code("b-02")
+                        .title("Course 2")
+                        .description("Course 2 Description")
+                        .price(50.0)
+                        .status(false)
+                        .build()
+        );
     }
+
+
 }

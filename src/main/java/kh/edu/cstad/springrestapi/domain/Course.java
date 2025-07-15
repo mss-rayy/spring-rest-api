@@ -10,11 +10,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class Course {
-    private UUID uuid;
+    private UUID id;
     private String code;
     private String title;
     private String description;
     private Double price;
     private Boolean status;
-
 }

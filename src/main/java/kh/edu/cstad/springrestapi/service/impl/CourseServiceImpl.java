@@ -17,68 +17,103 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
-    //    1. define dependency
     private final CourseRepository courseRepository;
 
     @Override
-    public CourseResponse createCourse(CourseRequest courseRequest) {
-//       1. check course code
+    public List<CourseResponse> getCourses(Boolean status, String title) {
 
+        List<CourseResponse> findCourses = courseRepository.getCourses()
+                .stream()
+                .filter(course -> {
+                    if(status != null) {
+                        return course.getStatus().equals(status);
+                    }
+                    return true;
+                })
+                .filter(course -> {
+                    if(title != null) {
+                        return course.getTitle().toLowerCase().contains(title.toLowerCase());
+                    }
+                    return true;
+                })
+                .map(course -> CourseResponse.builder()
+                        .code(course.getCode())
+                        .title(course.getTitle())
+                        .description(course.getDescription())
+                        .price(course.getPrice())
+                        .status(course.getStatus())
+                        .build()).toList();
+
+        if (findCourses.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with title " +  title +" NOT FOUND");
+        }
+
+        return  findCourses;
+    }
+
+    @Override
+    public CourseResponse addCourse(CourseRequest courseRequest) {
+
+//      Check code
         boolean isCourseExisted = courseRepository.getCourses()
                 .stream()
                 .anyMatch(course -> course.getCode().equalsIgnoreCase(courseRequest.code()));
 
+
+//        validate of course existed
         if (isCourseExisted) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Course code already existed");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Course code already exists");
         }
 
-//      2. map data from course request to domain model
+//        add courseRequest to Course
         Course course = Course.builder()
-                .uuid(UUID.randomUUID())
-                .code(courseRequest.code())
-                .title(courseRequest.title())
-                .description(courseRequest.description())
-                .price(courseRequest.price())
-                .status(false)
-                .build();
+                        .id(UUID.randomUUID())
+                        .code(courseRequest.code())
+                        .title(courseRequest.title())
+                        .description(courseRequest.description())
+                        .price(courseRequest.price())
+                        .status(false)
+                        .build();
 
         courseRepository.getCourses().add(course);
-
-//      3.map data domain model to course response
+//        map course to courseResponse
 
         return CourseResponse.builder()
                 .code(course.getCode())
                 .title(course.getTitle())
                 .description(course.getDescription())
                 .price(course.getPrice())
-                .status(course.getStatus())
+                .status(false)
                 .build();
     }
 
     @Override
-    public List<CourseResponse> getCourses() {
+    public CourseResponse getCourseByCode(String code) {
 
-        return courseRepository.getCourses().stream().map(course -> CourseResponse.builder()
+        return courseRepository.getCourses().stream()
+                .filter(course -> course.getCode().equalsIgnoreCase(code))
+                .map(course -> CourseResponse.builder()
                         .code(course.getCode())
                         .title(course.getTitle())
                         .description(course.getDescription())
                         .price(course.getPrice())
                         .status(course.getStatus())
-                        .build())
-                .toList();
-
+                        .build()
+                ).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
     }
-
 
     @Override
-    public void deleteCourse(String code) {
+    public void deleteCourseByCode(String code) {
 
-        boolean isCourseExisted = courseRepository.getCourses()
+//        check code exist or not
+         boolean isRemoved = courseRepository.getCourses()
                 .removeIf(course -> course.getCode().equalsIgnoreCase(code));
 
-        if (!isCourseExisted) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found!!");
-        }
+         if (!isRemoved) {
+             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found");
+         }
 
     }
+
+
 }

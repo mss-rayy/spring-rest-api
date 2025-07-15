@@ -6,24 +6,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 @RestControllerAdvice
-public class ServiceException {
+public class ServiceException{
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Map<?, ?>> handleServiceException(ResponseStatusException e) {
+    public ResponseEntity<?> handleResponseStatusException(ResponseStatusException ex){
 
-//        Homework : change this response to ErrorResponse instead
+        ErrorResponse<String> error = ErrorResponse.<String>builder()
+                .message(ex.getReason())
+                .status(ex.getStatusCode().value())
+                .timestamp(LocalDateTime.now())
+                .details(ex.getReason())
+                .build();
 
-        Map<String, Object> error = new HashMap<>();
-        error.put("status", e.getStatusCode().value());
-        error.put("message", e.getReason());
-        error.put("timestamp", LocalDateTime.now());
-
-        return ResponseEntity.status(e.getStatusCode()).body(error);
+        return ResponseEntity.status(ex.getStatusCode()).body(error);
     }
-}
 
+
+}

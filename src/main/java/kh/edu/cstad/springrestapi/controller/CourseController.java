@@ -1,39 +1,43 @@
 package kh.edu.cstad.springrestapi.controller;
 
+import jakarta.validation.Valid;
 import kh.edu.cstad.springrestapi.dto.CourseRequest;
 import kh.edu.cstad.springrestapi.dto.CourseResponse;
 import kh.edu.cstad.springrestapi.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/courses")
+@RequiredArgsConstructor
 public class CourseController {
 
-//    1. define dependency
     private final CourseService courseService;
 
     @GetMapping()
-    public List<CourseResponse> getCourses(){
-
-        return courseService.getCourses();
+    public List<CourseResponse> getCourses(@RequestParam(required = false) Boolean status, @RequestParam(required = false) String title){
+       return courseService.getCourses(status, title);
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED) // 201
-    public CourseResponse createCourse(@RequestBody CourseRequest courseRequest){
+    @ResponseStatus(HttpStatus.CREATED)
+    public CourseResponse addCourse(@Valid @RequestBody CourseRequest courseRequest){
+        return courseService.addCourse(courseRequest);
+    }
 
-        return courseService.createCourse(courseRequest);
+    @GetMapping("/{code}")
+    public CourseResponse getCourseByCode(@PathVariable String code){
+        return courseService.getCourseByCode(code);
     }
 
     @DeleteMapping("/{code}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCourse(@PathVariable String code){
-        courseService.deleteCourse(code);
+    public void deleteCourseByCode(@PathVariable String code){
+        courseService.deleteCourseByCode(code);
     }
+
 }

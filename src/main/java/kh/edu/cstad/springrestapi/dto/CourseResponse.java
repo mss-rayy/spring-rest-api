@@ -2,6 +2,7 @@ package kh.edu.cstad.springrestapi.dto;
 
 import lombok.Builder;
 
+
 @Builder
 public record CourseResponse(
         String code,
@@ -11,5 +12,3 @@ public record CourseResponse(
         Boolean status
 ) {
 }
-
-// immutetable, method : getter, constructor equal(),hashcode(), toString

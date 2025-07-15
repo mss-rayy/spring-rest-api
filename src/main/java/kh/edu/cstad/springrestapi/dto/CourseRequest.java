@@ -1,14 +1,16 @@
 package kh.edu.cstad.springrestapi.dto;
 
-import lombok.Builder;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Builder
 public record CourseRequest(
+
+        @NotBlank(message = "Code is required and cannot be blank")
         String code,
+
+        @NotBlank(message = "Title is required and cannot be blank")
         String title,
         String description,
         Double price
-) {
-}
-
-//domain -> dto -> service
+) { }
